@@ -1,15 +1,42 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 "use client";
+import { useEffect, useRef, useState } from "react";
+import { Fireworks } from "fireworks-js";
 
-import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
-
-export default function Home() {
-  const router = useRouter();
+export default function TestFireworks() {
+  const fireworksRef = useRef<HTMLDivElement>(null);
+  const audioRef = useRef<HTMLAudioElement>(null);
   const targetDate = new Date("2025-11-24T19:00:00").getTime();
   const [time, setTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+  const [audioPlaying, setAudioPlaying] = useState(false);
 
-  // ⏰ العداد الزمني
+  useEffect(() => {
+    if (fireworksRef.current) {
+      const fireworks = new Fireworks(fireworksRef.current);
+      fireworks.start();
+    }
+
+    const handleAudioToggle = () => {
+      if (audioRef.current) {
+        if (!audioPlaying) {
+          audioRef.current.play().catch(() => {
+            console.log("Audio play prevented by browser autoplay policy");
+          });
+        } else {
+          audioRef.current.pause();
+        }
+        setAudioPlaying(!audioPlaying);
+      }
+    };
+
+    window.addEventListener("click", handleAudioToggle);
+    window.addEventListener("touchstart", handleAudioToggle);
+
+    return () => {
+      window.removeEventListener("click", handleAudioToggle);
+      window.removeEventListener("touchstart", handleAudioToggle);
+    };
+  }, [audioPlaying]);
+
   useEffect(() => {
     const timer = setInterval(() => {
       const now = new Date().getTime();
@@ -30,47 +57,27 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
-  // 🔁 بعد دقيقتين ينتقل تلقائيًا
-  useEffect(() => {
-    const timeout = setTimeout(() => {
-      router.push("/celebrate"); // ← غيّري المسار هنا لو الصفحة مختلفة
-    }, 10000); // 120000 = دقيقتين
-
-    return () => clearTimeout(timeout);
-  }, []);
-
   return (
-    <div className="flex min-h-screen items-center justify-center transition-all duration-1000 relative bg-pink-100">
-      {/* 💖 الورد والقلوب */}
-      <div className="absolute inset-2 overflow-hidden pointer-events-none">
-        {Array.from({ length: 12 }).map((_, i) => (
-          <span
-            key={i}
-            className="absolute text-pink-400 text-3xl animate-float"
-            style={{
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 5}s`,
-              animationDuration: `${6 + Math.random() * 6}s`,
-            }}
-          >
-            {Math.random() > 0.5 ? "💛" : "🌸"}
-          </span>
-        ))}
-      </div>
+    <div className="relative w-screen h-screen overflow-auto bg-gradient-to-b from-indigo-950 via-indigo-900 to-blue-900">
+      {/* الألعاب النارية */}
+      <div ref={fireworksRef} className="overflow-hidden absolute inset-0 z-0"></div>
 
-      {/* ✨ المحتوى */}
-      <main className="relative z-30 my-5 flex flex-col justify-center items-center gap-6 p-6 text-center text-pink-900 transition-all duration-1000">
+      {/* الصوت */}
+      <audio ref={audioRef} src="/firework.mp3" loop />
+
+      {/* المحتوى */}
+      <main className="relative z-10 flex flex-col justify-center items-center gap-6 p-6 text-center text-white min-h-screen">
         <h1 className="great-vibes-regular text-6xl md:text-7xl">
-          <span className="animate__animated animate__fadeInLeft animate__slow">
+          <span className="text-yellow-300 animate__animated animate__fadeInLeft animate__slow">
             Osama
-          </span>{" "}
-          &
-          <span className="animate__animated animate__fadeInRight animate__slow">
+          </span>
+          &amp;
+          <span className="text-yellow-300 animate__animated animate__fadeInRight animate__slow">
             Mai
           </span>
         </h1>
 
-        <p className="text-lg md:text-xl">Join us to celebrate our wedding</p>
+        <p className="text-lg md:text-xl mt-4">Join us to celebrate our wedding</p>
         <h2 className="text-3xl font-mono">24 Nov 2025</h2>
 
         <ul className="flex gap-4 mt-4">
@@ -79,16 +86,16 @@ export default function Home() {
             return (
               <li
                 key={label}
-                className="flex flex-col items-center bg-white/60 px-4 py-2 rounded-xl shadow"
+                className="flex flex-col items-center bg-white/30 px-4 py-2 rounded-xl shadow"
               >
                 <span className="text-3xl font-bold">{value}</span>
-                <span className="text-sm text-gray-700">{label}</span>
+                <span className="text-sm text-yellow-300">{label}</span>
               </li>
             );
           })}
         </ul>
 
-        <div className="mt-4 w-full max-w-2xl">
+        <div className="mt-6 w-full max-w-2xl">
           <h1>قاعة دار الأشغال العسكرية - المعادي</h1>
           <h2 className="my-5">7:00 PM to 11:00 PM</h2>
           <iframe
