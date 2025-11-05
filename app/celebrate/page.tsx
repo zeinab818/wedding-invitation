@@ -12,12 +12,7 @@ export default function TestFireworks() {
 
   useEffect(() => {
     if (fireworksRef.current) {
-      const fireworks = new Fireworks(fireworksRef.current, {
-        intensity: 25,
-        trace: 3,
-        explosion: 5,
-        autoresize: true,
-      });
+      const fireworks = new Fireworks(fireworksRef.current);
       fireworks.start();
     }
 
