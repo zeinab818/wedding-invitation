@@ -9,7 +9,6 @@ export default function Home() {
   const targetDate = new Date("2025-11-24T19:00:00").getTime();
   const [time, setTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
 
-  // ⏰ العداد الزمني
   useEffect(() => {
     const timer = setInterval(() => {
       const now = new Date().getTime();
@@ -30,18 +29,18 @@ export default function Home() {
     return () => clearInterval(timer);
   }, []);
 
-  // 🔁 بعد دقيقتين ينتقل تلقائيًا
+
   useEffect(() => {
     const timeout = setTimeout(() => {
-      router.push("/celebrate"); // ← غيّري المسار هنا لو الصفحة مختلفة
-    }, 10000); // 120000 = دقيقتين
+      router.push("/celebrate"); 
+    }, 10000);
 
     return () => clearTimeout(timeout);
   }, []);
 
   return (
     <div className="flex min-h-screen items-center justify-center transition-all duration-1000 relative bg-pink-100">
-      {/* 💖 الورد والقلوب */}
+    
       <div className="absolute inset-2 overflow-hidden pointer-events-none">
         {Array.from({ length: 12 }).map((_, i) => (
           <span
@@ -58,13 +57,13 @@ export default function Home() {
         ))}
       </div>
 
-      {/* ✨ المحتوى */}
+
       <main className="relative z-30 my-5 flex flex-col justify-center items-center gap-6 p-6 text-center text-pink-900 transition-all duration-1000">
         <h1 className="great-vibes-regular text-6xl md:text-7xl">
           <span className="animate__animated animate__fadeInLeft animate__slow">
             Osama
-          </span>{" "}
-          &
+          </span>
+          <span >&</span>
           <span className="animate__animated animate__fadeInRight animate__slow">
             Mai
           </span>
@@ -89,7 +88,21 @@ export default function Home() {
         </ul>
 
         <div className="mt-4 w-full max-w-2xl">
-          <h1>قاعة دار الأشغال العسكرية - المعادي</h1>
+        <h1
+              dir="rtl"
+              className="text-xl md:text-2xl font-light text-pink-900 leading-relaxed"
+            >
+            دار الأشغال العسكرية – كورنيش المعادي
+          </h1>
+
+        <span
+          style={{ fontStretch: "85%", textTransform: "uppercase" }}
+          className="block mt-2 text-xl md:text-2xl font-semibold tracking-wide drop-shadow-[0_0_10px_rgba(255,215,0,0.8)] animate-pulse"
+        >
+          Crystal House
+        </span>
+
+
           <h2 className="my-5">7:00 PM to 11:00 PM</h2>
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d221063.62225527034!2d31.285354148749523!3d30.033440882019928!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145839811a5025df%3A0xd4f6d087deb6f114!2z2K_Yp9ixINin2YTYo9i02LrYp9mEINin2YTYudiz2YPYsdmK2Kk!5e0!3m2!1sen!2seg!4v1762279789633!5m2!1sen!2seg"

@@ -8,10 +8,16 @@ export default function TestFireworks() {
   const targetDate = new Date("2025-11-24T19:00:00").getTime();
   const [time, setTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [audioPlaying, setAudioPlaying] = useState(false);
+  const [showWeddingMsg, setShowWeddingMsg] = useState(false);
 
   useEffect(() => {
     if (fireworksRef.current) {
-      const fireworks = new Fireworks(fireworksRef.current);
+      const fireworks = new Fireworks(fireworksRef.current, {
+        intensity: 25,
+        trace: 3,
+        explosion: 5,
+        autoresize: true,
+      });
       fireworks.start();
     }
 
@@ -45,6 +51,7 @@ export default function TestFireworks() {
       if (diff <= 0) {
         clearInterval(timer);
         setTime({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+        setShowWeddingMsg(true); // 🩵 Show wedding message when time reaches 0
       } else {
         const days = Math.floor(diff / (1000 * 60 * 60 * 24));
         const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
@@ -59,44 +66,64 @@ export default function TestFireworks() {
 
   return (
     <div className="relative w-screen h-screen overflow-auto bg-gradient-to-b from-indigo-950 via-indigo-900 to-blue-900">
-      {/* الألعاب النارية */}
       <div ref={fireworksRef} className="overflow-hidden absolute inset-0 z-0"></div>
-
-      {/* الصوت */}
       <audio ref={audioRef} src="/firework.mp3" loop />
 
-      {/* المحتوى */}
       <main className="relative z-10 flex flex-col justify-center items-center gap-6 p-6 text-center text-white min-h-screen">
         <h1 className="great-vibes-regular text-6xl md:text-7xl">
-          <span className="text-yellow-300 animate__animated animate__fadeInLeft animate__slow">
+          <span className="text-yellow-300 drop-shadow-[0_0_10px_rgba(255,215,0,0.6)] animate__animated animate__fadeInLeft animate__slow">
             Osama
           </span>
           &amp;
-          <span className="text-yellow-300 animate__animated animate__fadeInRight animate__slow">
+          <span className="text-yellow-300 drop-shadow-[0_0_10px_rgba(255,215,0,0.6)] animate__animated animate__fadeInRight animate__slow">
             Mai
           </span>
         </h1>
 
-        <p className="text-lg md:text-xl mt-4">Join us to celebrate our wedding</p>
-        <h2 className="text-3xl font-mono">24 Nov 2025</h2>
+        {!showWeddingMsg ? (
+          <>
+            <p className="text-lg md:text-xl mt-4">Join us to celebrate our wedding</p>
+            <h2 className="text-3xl font-mono">24 Nov 2025</h2>
 
-        <ul className="flex gap-4 mt-4">
-          {["Days", "Hours", "Minutes", "Seconds"].map((label, i) => {
-            const value = Object.values(time)[i];
-            return (
-              <li
-                key={label}
-                className="flex flex-col items-center bg-white/30 px-4 py-2 rounded-xl shadow"
-              >
-                <span className="text-3xl font-bold">{value}</span>
-                <span className="text-sm text-yellow-300">{label}</span>
-              </li>
-            );
-          })}
-        </ul>
+            <ul className="flex gap-4 mt-4 animate__animated animate__fadeInUp">
+              {["Days", "Hours", "Minutes", "Seconds"].map((label, i) => {
+                const value = Object.values(time)[i];
+                return (
+                  <li
+                    key={label}
+                    className="flex flex-col items-center bg-white/30 px-4 py-2 rounded-xl shadow"
+                  >
+                    <span className="text-3xl font-bold">{value}</span>
+                    <span className="text-sm text-yellow-300">{label}</span>
+                  </li>
+                );
+              })}
+            </ul>
+          </>
+        ) : (
+          // 🎉 Animated Wedding Message when countdown ends
+          <div className="mt-10 text-center animate__animated animate__fadeInUp animate__slower">
+            <h2 className="text-5xl font-bold text-yellow-300 drop-shadow-[0_0_15px_rgba(255,215,0,0.9)] animate-pulse">
+              The Wedding Begins 💍
+            </h2>
+            <p className="text-lg mt-4 text-white/80">Congratulations to the lovely couple 🎇</p>
+          </div>
+        )}
 
         <div className="mt-6 w-full max-w-2xl">
-          <h1>قاعة دار الأشغال العسكرية - المعادي</h1>
+          <h1
+              dir="rtl"
+              className="text-xl md:text-2xl font-light text-white leading-relaxed"
+            >
+            دار الأشغال العسكرية – كورنيش المعادي
+          </h1>
+
+        <span
+          style={{ fontStretch: "85%", textTransform: "uppercase" }}
+          className="block mt-2 text-xl md:text-2xl font-semibold tracking-wide text-yellow-300 drop-shadow-[0_0_10px_rgba(255,215,0,0.8)] animate-pulse"
+        >
+          Crystal House
+        </span>
           <h2 className="my-5">7:00 PM to 11:00 PM</h2>
           <iframe
             src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d221063.62225527034!2d31.285354148749523!3d30.033440882019928!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145839811a5025df%3A0xd4f6d087deb6f114!2z2K_Yp9ixINin2YTYo9i02LrYp9mEINin2YTYudiz2YPYsdmK2Kk!5e0!3m2!1sen!2seg!4v1762279789633!5m2!1sen!2seg"
