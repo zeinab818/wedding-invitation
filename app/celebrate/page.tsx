@@ -5,7 +5,7 @@ import { Fireworks } from "fireworks-js";
 export default function TestFireworks() {
   const fireworksRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<HTMLAudioElement>(null);
-  const targetDate = new Date("2025-11-24T19:00:00").getTime();
+  const targetDate = new Date("2025-12-27T21:55:00").getTime();
   const [time, setTime] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 });
   const [audioPlaying, setAudioPlaying] = useState(false);
   const [showWeddingMsg, setShowWeddingMsg] = useState(false);
